@@ -1,0 +1,190 @@
+<div class="c-border">
+    <div class="op_traffic_time">
+        <div class="op_traffic_left">
+            <div class="op_traffic_title">今天（周二）</div>
+            <div class="op_traffic_txt">{{.Today0}}<span>和</span>{{.Today1}}</div>
+        </div>
+        <div class="op_traffic_right">
+            <div class="op_traffic_title">明天（周三）</div>
+            <div class="op_traffic_txt op_traffic_txt2">{{.Tomorrow0}}<span>和</span>{{.Tomorrow1}}</div>
+        </div>
+        <div class="op_traffic_right">
+            <div class="op_traffic_title"></div>
+        </div>
+        <div class="op_traffic_right">
+            <div class="op_traffic_title"></div>
+        </div>
+        <div class="op_traffic_clear"></div>
+    </div>
+    <div class="op_traffic_note">2014年4月14日--2014年7月12日，限行规则：</div>
+    <table cellspacing="0" cellpadding="0" width="100%" class="c-table c-gap-top-small c-gap-bottom-small">
+        <tbody>
+            <tr>
+                <th>周一</th>
+                <th>周二</th>
+                <th>周三</th>
+                <th>周四</th>
+                <th>周五</th>
+                <th>公休/节假日</th>
+            </tr>
+            <tr>
+                <td>{{.Monday0}}和{{.Monday1}}</td>
+                <td>{{.Tuesday0}}和{{.Tuesday1}}</td>
+                <td>{{.Wednesday0}}和{{.Wednesday1}}</td>
+                <td>{{.Thursday0}}和{{.Thursday1}}</td>
+                <td>{{.Friday0}}和{{.Friday1}}</td>
+                <td>不限行</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="op_traffic_remark">早7点至晚8点，限行机动车（含临时号牌）禁止在五环路以内道路（不含五环主路）行驶</div>
+    <div class="op_traffic_holiday">法定假日：端午节（5月31日--6月2日）不限行</div>
+    <div class="op_traffic_more"><a href="http://www.bjjtgl.gov.cn/publish/portal0/tab62/info52267.htm" target="_blank">查看全年限行方案&gt;&gt;</a>
+    </div>
+    <script>
+        A.setup({
+            sms: null
+        });
+    </script>
+</div>
+
+<style>
+#content_left .result-op, #content_left .result {
+    margin-bottom: 14px;
+    border-collapse: collapse;
+}
+.c-container {
+    width: 538px;
+    font-size: 13px;
+    line-height: 1.54;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.c-container .t, .c-default .t {
+    line-height: 1.54;
+}
+.c-gap-bottom-small {
+    margin-bottom: 5px;
+}
+.t {
+    font-weight: normal;
+    font-size: medium;
+    margin-bottom: 1px;
+}
+.c-border {
+    width: 518px;
+    padding: 9px;
+    border: 1px solid #e3e3e3;
+    border-bottom-color: #e0e0e0;
+    border-right-color: #ececec;
+    box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.072);
+    -webkit-box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.072);
+    -moz-box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.072);
+    -o-box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.072);
+}
+.op_traffic_time {
+    margin-bottom: 10px;
+    padding-top: 5px;
+    overflow: hidden;
+}
+.op_traffic_left {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.op_traffic_left, .op_traffic_right {
+    float: left;
+}
+.op_traffic_title, .op_traffic_txt, .op_traffic_off {
+    font-weight: bold;
+    text-align: center;
+}
+.op_traffic_title {
+    font-size: 1.077em;
+}
+.op_traffic_title, .op_traffic_remark, .op_traffic_holiday, .op_traffic_txt span {
+    color: #666;
+}
+.op_traffic_left .op_traffic_txt {
+    position: relative;
+    left: -4px;
+}
+.op_traffic_txt {
+    font-size: 2.308em;
+    font-family: arial;
+    padding: 9px 0 0 0;
+}
+.op_traffic_txt, .op_traffic_off {
+    color: #333;
+    line-height: 30px;
+}
+.op_traffic_title, .op_traffic_txt, .op_traffic_off {
+    font-weight: bold;
+    text-align: center;
+}
+.op_traffic_right {
+    padding: 0 20px;
+    border-left: 1px solid #ccc;
+}
+.op_traffic_left, .op_traffic_right {
+    float: left;
+}
+.op_traffic_note {
+    line-height: 22px;
+}
+.c-container table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.c-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.c-gap-bottom-small {
+    margin-bottom: 5px;
+}
+.c-gap-top-small {
+    margin-top: 5px;
+}
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+c-table th {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-weight: normal;
+    color: #666;
+    border-color: #f0f0f0;
+    white-space: nowrap;
+    background-color: #fafafa;
+}
+.c-table th, .c-table td {
+    padding-left: 10px;
+    line-height: 1.54;
+    font-size: 13px;
+    border-bottom: 1px solid #f3f3f3;
+    text-align: left;
+}
+.c-table th {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    font-weight: normal;
+    color: #666;
+    border-color: #f0f0f0;
+    white-space: nowrap;
+    background-color: #fafafa;
+}
+.c-table td {
+    padding-top: 6.5px;
+    padding-bottom: 6.5px;
+}
+.c-table th, .c-table td {
+    padding-left: 10px;
+    line-height: 1.54;
+    font-size: 13px;
+    border-bottom: 1px solid #f3f3f3;
+    text-align: left;
+}
+</style>
