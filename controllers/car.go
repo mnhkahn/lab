@@ -2,7 +2,8 @@ package controllers
 
 import (
 	// "github.com/astaxie/beegae"
-	"fmt"
+	// "fmt"
+	"lab/models"
 	"time"
 )
 
@@ -28,24 +29,12 @@ func (this *CarController) Get() {
 	Weeks := int(Gap+1) / 7
 	Left := int(Gap+1) % 7
 
-	this.Data["Today0"] = Xianxing[Weeks/13+Left-1][0]
-	this.Data["Today1"] = Xianxing[Weeks/13+Left-1][1]
-	this.Data["Tomorrow0"] = Xianxing[Weeks/13+Left][0]
-	this.Data["Tomorrow1"] = Xianxing[Weeks/13+Left][1]
+	Car := models.Car{}
 
-	Weekday := date.Weekday()
-	this.Data["Monday0"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)-3][0]
-	this.Data["Monday1"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)-3][1]
-	this.Data["Tuesday0"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)-2][0]
-	this.Data["Tuesday1"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)-2][1]
-	this.Data["Wednesday0"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)-1][0]
-	this.Data["Wednesday1"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)-1][1]
-	this.Data["Thursday0"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)][0]
-	this.Data["Thursday1"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)][1]
-	this.Data["Friday0"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)+1][0]
-	this.Data["Friday1"] = Xianxing[Weeks/13+Left+int(Weekday-time.Monday)+1][1]
+	Car.Today = append(Car.Today, Xianxing[Weeks/13+Left-1][0])
+	Car.Today = append(Car.Today, Xianxing[Weeks/13+Left-1][1])
+	Car.Tomorrow = append(Car.Tomorrow, Xianxing[Weeks/13+Left][0])
+	Car.Tomorrow = append(Car.Tomorrow, Xianxing[Weeks/13+Left][1])
 
-	this.Data["Gap"] = fmt.Sprintf("%d %d", Weeks, Left)
-	this.Data["Date"] = date.Format(Layout)
-	this.TplNames = "xianxing.html"
+	this.Serve(Car)
 }
