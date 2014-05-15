@@ -51,6 +51,10 @@ func (this *TVController) Get() {
 		}
 
 		re_title := regexp.MustCompile("<div class=\"mth_title mth_title_font\">(.*?)</div>")
+		// 过滤NBA最前线
+		if len(re_title.FindAllString(mtypec02[i], -1)) == 0 {
+			continue
+		}
 		title := re_title.FindAllString(mtypec02[i], -1)[0]
 		team_score := strings.Split(title[strings.Index(title, "<br />")+6:strings.Index(title, "</div>")], " ")
 
