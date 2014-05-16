@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"lab/models"
+	"net/http"
 	"regexp"
 	"strings"
-	"time"
+	// "time"
 )
 
 type TVController struct {
@@ -19,12 +20,17 @@ var NBA_LOGO = "http://cyeam.qiniudn.com/%s.jpg"
 var NBA = map[string]string{"湖人": "1", "凯尔特人": "2", "热火": "3", "篮网": "4", "尼克斯": "5", "魔术": "6", "76人": "7", "奇才": "8", "活塞": "9", "步行者": "10", "鹈鹕": "11", "雄鹿": "12", "老鹰": "13", "公牛": "14", "猛龙": "15", "骑士": "16", "小牛": "17", "马刺": "18", "森林狼": "19", "爵士": "20", "火箭": "21", "灰熊": "22", "掘金": "23", "国王": "24", "开拓者": "25", "太阳": "26", "勇士": "27", "雷霆": "28", "快船": "29", "山猫": "30"}
 
 func (this *TVController) Get() {
+	TVs := GetTVs(this.Controller.Ctx.Request)
+	this.Serve(TVs)
+}
+
+func GetTVs(Request *http.Request) []models.TV {
 	TVs := []models.TV{}
 
-	c := appengine.NewContext(this.Controller.Ctx.Request)
+	c := appengine.NewContext(Request)
 	client := urlfetch.Client(c)
 
-	now := time.Now()
+	now := GetShanghaiTime()
 	resp, _ := client.Get("http://match.sports.sina.com.cn/tvguide/program/top/?date=" + now.Format("2006-01-02"))
 	if resp == nil {
 
@@ -88,7 +94,7 @@ func (this *TVController) Get() {
 		TVs = append(TVs, TV)
 	}
 
-	this.Serve(TVs)
+	return TVs
 }
 
 func GetNBALogo(team string) string {

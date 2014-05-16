@@ -32,6 +32,8 @@ const (
 	News     = "news"
 )
 
+var TV = "[%s] %s %s : %s %s | %s"
+
 func (this *WeixinController) Get() {
 	signature := this.GetString("signature")
 	timestamp := this.GetString("timestamp")
@@ -137,7 +139,14 @@ func dealwith(req *models.Request, r *http.Request) (resp *models.Response, err 
 		} else {
 			resp.Content = fmt.Sprintf("%v", err)
 		}
+	} else if req.Content == "tv" {
+		TVs := GetTVs(r)
 
+		resp.MsgType = Text
+		resp.Content = ""
+		for i := 0; i < len(TVs); i++ {
+			resp.Content += fmt.Sprintf(TV, TVs[i].Time, TVs[i].Teams[0].Name, TVs[i].Teams[0].Score, TVs[i].Teams[1].Score, TVs[i].Teams[1].Name, strings.Join(TVs[i].TVs, ",")) + "\n"
+		}
 	}
 	// if strings.Trim(strings.ToLower(req.Content), " ") == "help" || req.Content == "Hello2BizUser" || req.Content == "subscribe" {
 	// 	resp.Content = "目前支持包的使用说明及例子的说明，这些例子和说明来自于github.com/astaxie/gopkg，例如如果你想查询strings有多少函数，你可以发送：strings，你想查询strings.ToLower函数，那么请发送：strings.ToLower"

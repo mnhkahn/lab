@@ -17,6 +17,7 @@ func init() {
 	beegae.Router("/doodle", &controllers.DoodleController{})
 	beegae.Router("/bing", &controllers.BingController{})
 	beegae.Router("/car", &controllers.CarController{})
+	beegae.Router("/time", &controllers.TestController{}, "*:Time")
 	beegae.Run()
 }
 

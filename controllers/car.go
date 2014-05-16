@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	// "github.com/astaxie/beegae"
-	// "fmt"
 	"lab/models"
 	"time"
 )
@@ -22,7 +20,7 @@ type CarController struct {
 func (this *CarController) Get() {
 	date, err := time.Parse(Layout, this.GetString("date"))
 	if err != nil {
-		date = time.Now()
+		date = GetShanghaiTime()
 	}
 
 	Gap := date.Sub(StartDate).Hours() / 24
@@ -33,8 +31,13 @@ func (this *CarController) Get() {
 
 	Car.Today = append(Car.Today, Xianxing[Weeks/13+Left-1][0])
 	Car.Today = append(Car.Today, Xianxing[Weeks/13+Left-1][1])
-	Car.Tomorrow = append(Car.Tomorrow, Xianxing[Weeks/13+Left][0])
-	Car.Tomorrow = append(Car.Tomorrow, Xianxing[Weeks/13+Left][1])
+	if true {
+		Car.Tomorrow = append(Car.Tomorrow, -1)
+		Car.Tomorrow = append(Car.Tomorrow, -1)
+	} else {
+		Car.Tomorrow = append(Car.Tomorrow, Xianxing[Weeks/13+Left][0])
+		Car.Tomorrow = append(Car.Tomorrow, Xianxing[Weeks/13+Left][1])
+	}
 
 	this.Serve(Car)
 }
