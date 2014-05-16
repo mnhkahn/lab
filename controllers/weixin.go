@@ -34,6 +34,7 @@ const (
 
 var TV = "[%s] %s %s : %s %s | %s"
 var XianXingTxt = "今日限行尾号：%d和%d"
+var WeatherLayout = "【%s】 %s，%s，%s度"
 
 func (this *WeixinController) Get() {
 	signature := this.GetString("signature")
@@ -153,6 +154,32 @@ func dealwith(req *models.Request, r *http.Request) (resp *models.Response, err 
 
 		resp.MsgType = Text
 		resp.Content = fmt.Sprintf(XianXingTxt, Car.Today[0], Car.Today[1])
+	} else if req.Content == "天气" || req.Content == "weather" {
+		c := appengine.NewContext(r)
+		client := urlfetch.Client(c)
+		resp_doodle, _ := client.Get("http://lab.cyeam.com/weather")
+		contents, _ := ioutil.ReadAll(resp_doodle.Body)
+
+		weather := models.Weather{}
+		err := json.Unmarshal(contents, &weather)
+
+		if err == nil {
+			resp.MsgType = News
+			resp.Content = "天气"
+			resp.ArticleCount = len(weather.Results[0].WeatherDate)
+
+			for i := 0; i < len(weather.Results[0].WeatherDate); i++ {
+				a := models.Item{}
+				a.Title = fmt.Sprintf(WeatherLayout, weather.Results[0].WeatherDate[i].Date, weather.Results[0].WeatherDate[i].Weather, weather.Results[0].WeatherDate[i].Wind, weather.Results[0].WeatherDate[i].Temperature)
+				a.PicUrl = weather.Results[0].WeatherDate[i].PicUrl
+				a.Description = "点击『查看原文』来查看接口"
+				a.Url = "http://lab.cyeam.com/weather"
+				resp.Articles = append(resp.Articles, &a)
+			}
+			resp.FuncFlag = 1
+		} else {
+			resp.Content = fmt.Sprintf("%v", err)
+		}
 	}
 	// if strings.Trim(strings.ToLower(req.Content), " ") == "help" || req.Content == "Hello2BizUser" || req.Content == "subscribe" {
 	// 	resp.Content = "目前支持包的使用说明及例子的说明，这些例子和说明来自于github.com/astaxie/gopkg，例如如果你想查询strings有多少函数，你可以发送：strings，你想查询strings.ToLower函数，那么请发送：strings.ToLower"
