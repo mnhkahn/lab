@@ -23,11 +23,17 @@ func (this *CarController) Get() {
 		date = GetShanghaiTime()
 	}
 
+	Car := GetCar(date)
+
+	this.Serve(Car)
+}
+
+func GetCar(date time.Time) models.Car {
+	Car := models.Car{}
+
 	Gap := date.Sub(StartDate).Hours() / 24
 	Weeks := int(Gap+1) / 7
 	Left := int(Gap+1) % 7
-
-	Car := models.Car{}
 
 	Car.Today = append(Car.Today, Xianxing[Weeks/13+Left-1][0])
 	Car.Today = append(Car.Today, Xianxing[Weeks/13+Left-1][1])
@@ -39,5 +45,5 @@ func (this *CarController) Get() {
 		Car.Tomorrow = append(Car.Tomorrow, Xianxing[Weeks/13+Left][1])
 	}
 
-	this.Serve(Car)
+	return Car
 }
