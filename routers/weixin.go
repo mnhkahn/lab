@@ -1,11 +1,11 @@
 package routers
 
 import (
-	"github.com/astaxie/beegae"
+	"github.com/astaxie/beego"
 	"lab/controllers"
 )
 
 func init() {
-	beegae.Router("/weixin/verify", &controllers.WeixinController{})
-	beegae.Router("/weixin", &controllers.WeixinController{})
+	beego.Router("/weixin/verify", &controllers.WeixinController{})
+	beego.Router("/weixin", &controllers.WeixinController{})
 }

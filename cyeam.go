@@ -1,10 +1,10 @@
-package Cyeam
+package main
 
 import (
-	"github.com/astaxie/beegae"
+	"github.com/astaxie/beego"
 	_ "lab/routers"
 )
 
-func init() {
-	beegae.Run()
+func main() {
+	beego.Run()
 }

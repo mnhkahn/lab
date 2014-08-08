@@ -3,13 +3,13 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/astaxie/beegae"
+	"github.com/astaxie/beego"
 )
 
 const JS string = "js"
 
 type CyeamController struct {
-	beegae.Controller
+	beego.Controller
 }
 
 func (this *CyeamController) Get() {

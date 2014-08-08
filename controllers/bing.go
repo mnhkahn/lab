@@ -3,12 +3,12 @@ package controllers
 import (
 	// "appengine"
 	// "appengine/urlfetch"
-	"github.com/astaxie/beegae"
+	"github.com/astaxie/beego"
 	// "lab/models"
 )
 
 type BingController struct {
-	beegae.Controller
+	beego.Controller
 }
 
 func (this *BingController) Get() {

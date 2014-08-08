@@ -1,13 +1,11 @@
 package controllers
 
 import (
-	"appengine"
-	"appengine/urlfetch"
 	"crypto/sha1"
-	"encoding/json"
+	// "encoding/json"
 	"encoding/xml"
 	"fmt"
-	"github.com/astaxie/beegae"
+	"github.com/astaxie/beego"
 	"io"
 	"io/ioutil"
 	"lab/models"
@@ -18,7 +16,7 @@ import (
 )
 
 type WeixinController struct {
-	beegae.Controller
+	beego.Controller
 }
 
 const (
@@ -118,29 +116,29 @@ func dealwith(req *models.Request, r *http.Request) (resp *models.Response, err 
 
 	resp.Content = req.Content
 	if req.Content == "doodle" {
-		c := appengine.NewContext(r)
-		client := urlfetch.Client(c)
-		resp_doodle, _ := client.Get("http://doodle.cyeam.com/")
-		contents, _ := ioutil.ReadAll(resp_doodle.Body)
+		// c := appengine.NewContext(r)
+		// client := urlfetch.Client(c)
+		// resp_doodle, _ := client.Get("http://doodle.cyeam.com/")
+		// contents, _ := ioutil.ReadAll(resp_doodle.Body)
 
-		doodle := models.CyeamDoodle{}
-		err := json.Unmarshal(contents, &doodle)
+		// doodle := models.CyeamDoodle{}
+		// err := json.Unmarshal(contents, &doodle)
 
-		if err == nil {
-			resp.MsgType = News
-			resp.Content = "doodle"
-			resp.ArticleCount = 1
+		// if err == nil {
+		// 	resp.MsgType = News
+		// 	resp.Content = "doodle"
+		// 	resp.ArticleCount = 1
 
-			a := models.Item{}
-			a.Title = doodle.Title
-			a.PicUrl = doodle.Doodle
-			a.Description = "点击『查看原文』来查看接口"
-			a.Url = "http://doodle.cyeam.com/"
-			resp.FuncFlag = 1
-			resp.Articles = append(resp.Articles, &a)
-		} else {
-			resp.Content = fmt.Sprintf("%v", err)
-		}
+		// 	a := models.Item{}
+		// 	a.Title = doodle.Title
+		// 	a.PicUrl = doodle.Doodle
+		// 	a.Description = "点击『查看原文』来查看接口"
+		// 	a.Url = "http://doodle.cyeam.com/"
+		// 	resp.FuncFlag = 1
+		// 	resp.Articles = append(resp.Articles, &a)
+		// } else {
+		// 	resp.Content = fmt.Sprintf("%v", err)
+		// }
 	} else if req.Content == "tv" {
 		TVs := GetTVs(r)
 
@@ -155,31 +153,31 @@ func dealwith(req *models.Request, r *http.Request) (resp *models.Response, err 
 		resp.MsgType = Text
 		resp.Content = fmt.Sprintf(XianXingTxt, Car.Today[0], Car.Today[1])
 	} else if req.Content == "天气" || req.Content == "weather" {
-		c := appengine.NewContext(r)
-		client := urlfetch.Client(c)
-		resp_doodle, _ := client.Get("http://lab.cyeam.com/weather")
-		contents, _ := ioutil.ReadAll(resp_doodle.Body)
+		// c := appengine.NewContext(r)
+		// client := urlfetch.Client(c)
+		// resp_doodle, _ := client.Get("http://lab.cyeam.com/weather")
+		// contents, _ := ioutil.ReadAll(resp_doodle.Body)
 
-		weather := models.Weather{}
-		err := json.Unmarshal(contents, &weather)
+		// weather := models.Weather{}
+		// err := json.Unmarshal(contents, &weather)
 
-		if err == nil {
-			resp.MsgType = News
-			resp.Content = "天气"
-			resp.ArticleCount = len(weather.Results[0].WeatherDate)
+		// if err == nil {
+		// 	resp.MsgType = News
+		// 	resp.Content = "天气"
+		// 	resp.ArticleCount = len(weather.Results[0].WeatherDate)
 
-			for i := 0; i < len(weather.Results[0].WeatherDate); i++ {
-				a := models.Item{}
-				a.Title = fmt.Sprintf(WeatherLayout, weather.Results[0].WeatherDate[i].Date, weather.Results[0].WeatherDate[i].Weather, weather.Results[0].WeatherDate[i].Wind, weather.Results[0].WeatherDate[i].Temperature)
-				a.PicUrl = weather.Results[0].WeatherDate[i].PicUrl
-				a.Description = "点击『查看原文』来查看接口"
-				a.Url = "http://lab.cyeam.com/weather"
-				resp.Articles = append(resp.Articles, &a)
-			}
-			resp.FuncFlag = 1
-		} else {
-			resp.Content = fmt.Sprintf("%v", err)
-		}
+		// 	for i := 0; i < len(weather.Results[0].WeatherDate); i++ {
+		// 		a := models.Item{}
+		// 		a.Title = fmt.Sprintf(WeatherLayout, weather.Results[0].WeatherDate[i].Date, weather.Results[0].WeatherDate[i].Weather, weather.Results[0].WeatherDate[i].Wind, weather.Results[0].WeatherDate[i].Temperature)
+		// 		a.PicUrl = weather.Results[0].WeatherDate[i].PicUrl
+		// 		a.Description = "点击『查看原文』来查看接口"
+		// 		a.Url = "http://lab.cyeam.com/weather"
+		// 		resp.Articles = append(resp.Articles, &a)
+		// 	}
+		// 	resp.FuncFlag = 1
+		// } else {
+		// 	resp.Content = fmt.Sprintf("%v", err)
+		// }
 	}
 	// if strings.Trim(strings.ToLower(req.Content), " ") == "help" || req.Content == "Hello2BizUser" || req.Content == "subscribe" {
 	// 	resp.Content = "目前支持包的使用说明及例子的说明，这些例子和说明来自于github.com/astaxie/gopkg，例如如果你想查询strings有多少函数，你可以发送：strings，你想查询strings.ToLower函数，那么请发送：strings.ToLower"

@@ -1,28 +1,26 @@
 package controllers
 
 import (
-	"appengine"
-	"appengine/urlfetch"
 	"encoding/xml"
-	"github.com/astaxie/beegae"
-	"io/ioutil"
+	"github.com/astaxie/beego"
+	// "io/ioutil"
 	"lab/models"
 	"regexp"
 )
 
 type DoodleController struct {
-	beegae.Controller
+	beego.Controller
 }
 
 func (this *DoodleController) Get() {
-	c := appengine.NewContext(this.Controller.Ctx.Request)
-	client := urlfetch.Client(c)
-	resp, _ := client.Get("http://www.google.com/doodles/doodles.xml")
-	contents, _ := ioutil.ReadAll(resp.Body)
+	// c := appengine.NewContext(this.Controller.Ctx.Request)
+	// client := urlfetch.Client(c)
+	// resp, _ := client.Get("http://www.google.com/doodles/doodles.xml")
+	// contents, _ := ioutil.ReadAll(resp.Body)
 
-	cy := ParseDoodle(contents)
+	// cy := ParseDoodle(contents)
 
-	this.Data["json"] = &cy
+	// this.Data["json"] = &cy
 	this.ServeJson()
 }
 

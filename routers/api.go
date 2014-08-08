@@ -1,21 +1,21 @@
 package routers
 
 import (
-	"github.com/astaxie/beegae"
+	"github.com/astaxie/beego"
 	"html/template"
 	"lab/controllers"
 	"net/http"
 )
 
 func init() {
-	beegae.Errorhandler("404", page_not_found)
-	beegae.Router("/ip", &controllers.IpController{}, "*:GetIp")
-	beegae.Router("/weather", &controllers.WeatherController{}, "*:GetWeather")
-	beegae.Router("/tv", &controllers.TVController{})
-	beegae.Router("/doodle", &controllers.DoodleController{})
-	beegae.Router("/bing", &controllers.BingController{})
-	beegae.Router("/car", &controllers.CarController{})
-	beegae.Router("/time", &controllers.TestController{}, "*:Time")
+	beego.Errorhandler("404", page_not_found)
+	beego.Router("/ip", &controllers.IpController{}, "*:GetIp")
+	beego.Router("/weather", &controllers.WeatherController{}, "*:GetWeather")
+	beego.Router("/tv", &controllers.TVController{})
+	beego.Router("/doodle", &controllers.DoodleController{})
+	beego.Router("/bing", &controllers.BingController{})
+	beego.Router("/car", &controllers.CarController{})
+	beego.Router("/time", &controllers.TestController{}, "*:Time")
 
 }
 

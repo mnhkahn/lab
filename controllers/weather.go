@@ -1,36 +1,34 @@
 package controllers
 
 import (
-	"appengine"
-	"appengine/urlfetch"
-	"encoding/json"
-	"github.com/astaxie/beegae"
-	"io/ioutil"
-	"lab/models"
+	// "encoding/json"
+	"github.com/astaxie/beego"
+	// "io/ioutil"
+	// "lab/models"
 	// "strings"
 )
 
 type WeatherController struct {
-	beegae.Controller
+	beego.Controller
 }
 
 func (this *WeatherController) GetWeather() {
-	c := appengine.NewContext(this.Controller.Ctx.Request)
-	client := urlfetch.Client(c)
-	resp, _ := client.Get("http://api.map.baidu.com/telematics/v3/weather?location=%E5%8C%97%E4%BA%AC&output=json&ak=43E57D0f47ca6382344892b9b65ba0ad")
-	Weather := models.Weather{}
-	contents, _ := ioutil.ReadAll(resp.Body)
-	json.Unmarshal(contents, &Weather)
+	// c := appengine.NewContext(this.Controller.Ctx.Request)
+	// client := urlfetch.Client(c)
+	// resp, _ := client.Get("http://api.map.baidu.com/telematics/v3/weather?location=%E5%8C%97%E4%BA%AC&output=json&ak=43E57D0f47ca6382344892b9b65ba0ad")
+	// Weather := models.Weather{}
+	// contents, _ := ioutil.ReadAll(resp.Body)
+	// json.Unmarshal(contents, &Weather)
 
-	big := true
-	for i := 0; i < len(Weather.Results[0].WeatherDate); i++ {
-		Weather.Results[0].WeatherDate[i].PicUrl = GetWeatherIcon(Weather.Results[0].WeatherDate[i].Weather, big)
-		if i == 0 {
-			big = false
-		}
-	}
+	// big := true
+	// for i := 0; i < len(Weather.Results[0].WeatherDate); i++ {
+	// 	Weather.Results[0].WeatherDate[i].PicUrl = GetWeatherIcon(Weather.Results[0].WeatherDate[i].Weather, big)
+	// 	if i == 0 {
+	// 		big = false
+	// 	}
+	// }
 
-	this.Data["json"] = &Weather
+	// this.Data["json"] = &Weather
 	this.ServeJson()
 }
 
