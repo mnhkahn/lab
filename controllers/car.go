@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	// "fmt"
 	"lab/models"
 	"time"
 )
@@ -31,12 +32,14 @@ func (this *CarController) Get() {
 func GetCar(date time.Time) models.Car {
 	Car := models.Car{}
 
+	// 天数
 	Gap := date.Sub(StartDate).Hours() / 24
+	// 周数
 	Weeks := int(Gap+1) / 7
+	// 余数，星期数
 	Left := int(Gap+1) % 7
-
-	Car.Today = append(Car.Today, Xianxing[Weeks/13+Left-1][0])
-	Car.Today = append(Car.Today, Xianxing[Weeks/13+Left-1][1])
+	Car.Today = append(Car.Today, Xianxing[(Left-1-Weeks/13)%5][0])
+	Car.Today = append(Car.Today, Xianxing[(Left-1-Weeks/13)%5][1])
 	if true {
 		Car.Tomorrow = append(Car.Tomorrow, -1)
 		Car.Tomorrow = append(Car.Tomorrow, -1)
