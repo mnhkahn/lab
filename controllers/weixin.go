@@ -2,11 +2,10 @@ package controllers
 
 import (
 	"crypto/sha1"
-	"encoding/json"
+	// "encoding/json"
 	"encoding/xml"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/httplib"
 	"io"
 	"io/ioutil"
 	"lab/models"
@@ -117,35 +116,29 @@ func dealwith(req *models.Request, r *http.Request) (resp *models.Response, err 
 
 	resp.Content = req.Content
 	if req.Content == "doodle" {
-		req := httplib.Get("http://api.cyeam.com/doodle")
-		req.SetTimeout(time.Duration(5)*time.Second, time.Duration(5)*time.Second)
-		req.Debug(beego.AppConfig.String("runmode") == "dev")
-		contents, err := req.Bytes()
-		if err != nil {
-			return nil, err
-		}
+		// c := appengine.NewContext(r)
+		// client := urlfetch.Client(c)
+		// resp_doodle, _ := client.Get("http://doodle.cyeam.com/")
+		// contents, _ := ioutil.ReadAll(resp_doodle.Body)
 
-		doodle := models.CyeamDoodle{}
-		err = json.Unmarshal(contents, &doodle)
-		if err != nil {
-			return nil, err
-		}
+		// doodle := models.CyeamDoodle{}
+		// err := json.Unmarshal(contents, &doodle)
 
-		if err == nil {
-			resp.MsgType = News
-			resp.Content = "doodle"
-			resp.ArticleCount = 1
+		// if err == nil {
+		// 	resp.MsgType = News
+		// 	resp.Content = "doodle"
+		// 	resp.ArticleCount = 1
 
-			a := models.Item{}
-			a.Title = doodle.Title
-			a.PicUrl = doodle.Doodle
-			a.Description = "点击『查看原文』来查看接口"
-			a.Url = "http://doodle.cyeam.com/"
-			resp.FuncFlag = 1
-			resp.Articles = append(resp.Articles, &a)
-		} else {
-			resp.Content = fmt.Sprintf("%v", err)
-		}
+		// 	a := models.Item{}
+		// 	a.Title = doodle.Title
+		// 	a.PicUrl = doodle.Doodle
+		// 	a.Description = "点击『查看原文』来查看接口"
+		// 	a.Url = "http://doodle.cyeam.com/"
+		// 	resp.FuncFlag = 1
+		// 	resp.Articles = append(resp.Articles, &a)
+		// } else {
+		// 	resp.Content = fmt.Sprintf("%v", err)
+		// }
 	} else if req.Content == "tv" {
 		TVs := GetTVs(r)
 

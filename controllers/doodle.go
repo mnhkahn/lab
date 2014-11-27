@@ -2,12 +2,10 @@ package controllers
 
 import (
 	"encoding/xml"
-	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/httplib"
+	// "io/ioutil"
 	"lab/models"
 	"regexp"
-	"time"
 )
 
 type DoodleController struct {
@@ -15,22 +13,19 @@ type DoodleController struct {
 }
 
 func (this *DoodleController) Get() {
-	req := httplib.Get("http://www.google.com/doodles/doodles.xml")
-	req.SetTimeout(time.Duration(5)*time.Second, time.Duration(5)*time.Second)
-	req.Debug(beego.AppConfig.String("runmode") == "dev")
-	contents, err := req.Bytes()
+	// c := appengine.NewContext(this.Controller.Ctx.Request)
+	// client := urlfetch.Client(c)
+	// resp, _ := client.Get("http://www.google.com/doodles/doodles.xml")
+	// contents, _ := ioutil.ReadAll(resp.Body)
 
-	if err != nil {
-		fmt.Println(err)
-		this.Abort("500")
-	}
-	cy := ParseDoodle(contents)
+	// cy := ParseDoodle(contents)
 
-	this.Data["json"] = &cy
+	// this.Data["json"] = &cy
 	this.ServeJson()
 }
 
 func ParseDoodle(contents []byte) models.CyeamDoodle {
+
 	v := models.Rss{}
 	xml.Unmarshal(contents, &v)
 
