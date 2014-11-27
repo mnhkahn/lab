@@ -9,6 +9,7 @@ import (
 
 func init() {
 	beego.Errorhandler("404", page_not_found)
+	beego.Router("/post", &controllers.CyeamController{}, "*:GetPost")
 	beego.Router("/ip", &controllers.IpController{}, "*:GetIp")
 	beego.Router("/weather", &controllers.WeatherController{}, "*:GetWeather")
 	beego.Router("/tv", &controllers.TVController{})
