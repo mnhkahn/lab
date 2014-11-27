@@ -2,6 +2,7 @@ package models
 
 import (
 	"cyeam_post/dao"
+	cyeam_post_model "cyeam_post/models"
 	"time"
 )
 
@@ -21,9 +22,19 @@ type Post struct {
 }
 
 func GetPost(author, sort string, page, size int) []Post {
-	posts := make([]Post, 0)
 	Dao, _ := dao.NewDao("db", "cyeam:qwerty@tcp(128.199.131.129:3306)/cyeam?charset=utf8")
 	models := Dao.GetPost(author, sort, size, (page-1)*size)
+	return FormatPost(models)
+}
+
+func SearchPost(q string, page, size int) []Post {
+	Dao, _ := dao.NewDao("db", "cyeam:qwerty@tcp(128.199.131.129:3306)/cyeam?charset=utf8")
+	models := Dao.Search(q, size, (page-1)*size)
+	return FormatPost(models)
+}
+
+func FormatPost(models []cyeam_post_model.Post) []Post {
+	posts := make([]Post, 0)
 	for _, model := range models {
 		post := Post{}
 		post.Id = model.Id
