@@ -46,11 +46,7 @@ func FormatPost(models []cyeam_post_model.Post, key string) []Post {
 		post.Category = model.Category
 		post.Tags = model.Tags
 		post.Figure = model.Figure
-		if key != "" {
-			post.Detail = template.HTML(getDesc(model.Detail, key))
-		} else {
-			post.Detail = template.HTML(model.Detail)
-		}
+		post.Detail = template.HTML(model.Detail)
 		post.Link = model.Link
 		post.Source = model.Source
 		post.ParseDate = model.ParseDate
