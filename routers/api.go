@@ -12,6 +12,7 @@ func init() {
 	beego.Router("/post", &controllers.CyeamController{}, "*:GetPost")
 	beego.Router("/doodle", &controllers.DoodleController{})
 	beego.Router("/bing", &controllers.BingController{})
+	beego.Router("/qr", &controllers.CyeamController{}, "Get:Qr")
 }
 
 var errtol = "<iframe scrolling='no' frameborder='0' src='http://yibo.iyiyun.com/js/yibo404/key/2354' width='640' height='464' style='display:block;'></iframe>"
