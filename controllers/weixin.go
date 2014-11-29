@@ -2,11 +2,9 @@ package controllers
 
 import (
 	"crypto/sha1"
-	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/httplib"
 	"io"
 	"io/ioutil"
 	"lab/models"
@@ -117,21 +115,9 @@ func dealwith(req *models.Request, r *http.Request) (resp *models.Response, err 
 
 	resp.Content = req.Content
 	if req.Content == "doodle" {
-		req := httplib.Get("http://api.cyeam.com/doodle")
-		req.SetTimeout(time.Duration(5)*time.Second, time.Duration(5)*time.Second)
-		req.Debug(beego.AppConfig.String("runmode") == "dev")
-		contents, err := req.Bytes()
-		if err != nil {
-			return nil, err
-		}
+		doodle := models.GetDoodle()
 
-		doodle := models.CyeamDoodle{}
-		err = json.Unmarshal(contents, &doodle)
-		if err != nil {
-			return nil, err
-		}
-
-		if err == nil {
+		if doodle.Doodle != "" {
 			resp.MsgType = News
 			resp.Content = "doodle"
 			resp.ArticleCount = 1
@@ -139,95 +125,27 @@ func dealwith(req *models.Request, r *http.Request) (resp *models.Response, err 
 			a := models.Item{}
 			a.Title = doodle.Title
 			a.PicUrl = doodle.Doodle
-			a.Description = "点击『查看原文』来查看接口"
-			a.Url = "http://doodle.cyeam.com/"
+			a.Description = "点击『查看原文』来查看详细说明"
+			a.Url = "http://cyeam.com/"
 			resp.FuncFlag = 1
 			resp.Articles = append(resp.Articles, &a)
 		} else {
 			resp.Content = fmt.Sprintf("%v", err)
 		}
-	} else if req.Content == "tv" {
-		TVs := GetTVs(r)
+	} else if req.Content == "bing" {
+		bing := models.GetBing()
+		resp.MsgType = News
+		resp.Content = "bing"
+		resp.ArticleCount = 1
 
-		resp.MsgType = Text
-		resp.Content = ""
-		for i := 0; i < len(TVs); i++ {
-			resp.Content += fmt.Sprintf(TV, TVs[i].Time, TVs[i].Teams[0].Name, TVs[i].Teams[0].Score, TVs[i].Teams[1].Score, TVs[i].Teams[1].Name, strings.Join(TVs[i].TVs, ",")) + "\n"
-		}
-	} else if req.Content == "car" {
-		Car := GetCar(GetShanghaiTime())
-
-		resp.MsgType = Text
-		resp.Content = fmt.Sprintf(XianXingTxt, Car.Today[0], Car.Today[1])
-	} else if req.Content == "天气" || req.Content == "weather" {
-		// c := appengine.NewContext(r)
-		// client := urlfetch.Client(c)
-		// resp_doodle, _ := client.Get("http://lab.cyeam.com/weather")
-		// contents, _ := ioutil.ReadAll(resp_doodle.Body)
-
-		// weather := models.Weather{}
-		// err := json.Unmarshal(contents, &weather)
-
-		// if err == nil {
-		// 	resp.MsgType = News
-		// 	resp.Content = "天气"
-		// 	resp.ArticleCount = len(weather.Results[0].WeatherDate)
-
-		// 	for i := 0; i < len(weather.Results[0].WeatherDate); i++ {
-		// 		a := models.Item{}
-		// 		a.Title = fmt.Sprintf(WeatherLayout, weather.Results[0].WeatherDate[i].Date, weather.Results[0].WeatherDate[i].Weather, weather.Results[0].WeatherDate[i].Wind, weather.Results[0].WeatherDate[i].Temperature)
-		// 		a.PicUrl = weather.Results[0].WeatherDate[i].PicUrl
-		// 		a.Description = "点击『查看原文』来查看接口"
-		// 		a.Url = "http://lab.cyeam.com/weather"
-		// 		resp.Articles = append(resp.Articles, &a)
-		// 	}
-		// 	resp.FuncFlag = 1
-		// } else {
-		// 	resp.Content = fmt.Sprintf("%v", err)
-		// }
+		a := models.Item{}
+		a.Title = "bing"
+		a.PicUrl = bing
+		a.Description = "点击『查看原文』来查看详细说明"
+		a.Url = "http://cyeam.com/"
+		resp.FuncFlag = 1
+		resp.Articles = append(resp.Articles, &a)
 	}
-	// if strings.Trim(strings.ToLower(req.Content), " ") == "help" || req.Content == "Hello2BizUser" || req.Content == "subscribe" {
-	// 	resp.Content = "目前支持包的使用说明及例子的说明，这些例子和说明来自于github.com/astaxie/gopkg，例如如果你想查询strings有多少函数，你可以发送：strings，你想查询strings.ToLower函数，那么请发送：strings.ToLower"
-	// 	return resp, nil
-	// }
-	// strs := strings.Split(req.Content, ".")
-	// var resurl string
-	// var a models.Item
-	// if len(strs) == 1 {
-	// 	resurl = "https://raw.github.com/astaxie/gopkg/master/" + strings.Trim(strings.ToLower(strs[0]), " ") + "/README.md"
-	// 	a.Url = "https://github.com/astaxie/gopkg/tree/master/" + strings.Trim(strings.ToLower(strs[0]), " ") + "/README.md"
-	// } else {
-	// 	var other []string
-	// 	for k, v := range strs {
-	// 		if k < (len(strs) - 1) {
-	// 			other = append(other, strings.Trim(strings.ToLower(v), " "))
-	// 		} else {
-	// 			other = append(other, strings.Trim(strings.Title(v), " "))
-	// 		}
-	// 	}
-	// 	resurl = "https://raw.github.com/astaxie/gopkg/master/" + strings.Join(other, "/") + ".md"
-	// 	a.Url = "https://github.com/astaxie/gopkg/tree/master/" + strings.Join(other, "/") + ".md"
-	// }
-	// beego.Info(resurl)
-	// rsp, err := http.Get(resurl)
-	// if err != nil {
-	// 	resp.Content = "不存在该包内容"
-	// 	return nil, err
-	// }
-	// defer rsp.Body.Close()
-	// if rsp.StatusCode == 404 {
-	// 	resp.Content = "找不到你要查询的包:" + req.Content
-	// 	return resp, nil
-	// }
-	// resp.MsgType = News
-	// resp.ArticleCount = 1
-	// body, err := ioutil.ReadAll(rsp.Body)
-	// beego.Info(string(body))
-	// a.Description = string(body)
-	// a.Title = req.Content
-	// a.PicUrl = "http://bbs.gocn.im/static/image/common/logo.png"
-	// resp.Articles = append(resp.Articles, &a)
-	// resp.FuncFlag = 1
 
 	return resp, nil
 }
