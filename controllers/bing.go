@@ -1,10 +1,9 @@
 package controllers
 
 import (
-	// "appengine"
-	// "appengine/urlfetch"
 	"github.com/astaxie/beego"
-	// "lab/models"
+	"lab/models"
+	"net/http"
 )
 
 type BingController struct {
@@ -12,4 +11,5 @@ type BingController struct {
 }
 
 func (this *BingController) Get() {
+	http.Redirect(this.Ctx.ResponseWriter, this.Ctx.Request, models.GetBing(), http.StatusFound)
 }
