@@ -3,13 +3,14 @@ package models
 import (
 	"cyeam_post/dao"
 	cyeam_post_model "cyeam_post/models"
+	// "fmt"
 	"html/template"
 	"strings"
 	"time"
 )
 
 type Post struct {
-	Id          int           `json:"id"`
+	Id          interface{}   `json:"id"`
 	Title       string        `json:"title`
 	CreateTime  time.Time     `json:"create_time"`
 	Author      string        `json:"author"`
@@ -24,7 +25,8 @@ type Post struct {
 }
 
 func GetPost(author, sort string, page, size int) []Post {
-	Dao, _ := dao.NewDao("db", "cyeam:qwerty@tcp(128.199.131.129:3306)/cyeam?charset=utf8")
+	Dao, _ := dao.NewDao("solr", "http://128.199.131.129:8983/solr/post")
+	Dao.Debug(true)
 	models := Dao.GetPost(author, sort, size, (page-1)*size)
 	return FormatPost(models, "")
 }
@@ -41,7 +43,7 @@ func FormatPost(models []cyeam_post_model.Post, key string) []Post {
 		post := Post{}
 		post.Id = model.Id
 		post.Title = model.Title
-		post.CreateTime = model.CreateTime
+		// post.CreateTime = model.CreateTime
 		post.Author = model.Author
 		post.Category = model.Category
 		post.Tags = model.Tags
@@ -49,7 +51,7 @@ func FormatPost(models []cyeam_post_model.Post, key string) []Post {
 		post.Detail = template.HTML(model.Detail)
 		post.Link = model.Link
 		post.Source = model.Source
-		post.ParseDate = model.ParseDate
+		post.ParseDate = model.ParseDate.Time
 		posts = append(posts, post)
 	}
 	return posts
