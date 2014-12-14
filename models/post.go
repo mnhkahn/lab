@@ -18,7 +18,7 @@ type Post struct {
 	Category    string        `json:"category"`
 	Tags        string        `json:"tags"`
 	Figure      string        `json:"figure"`
-	Description string        `json:"description"`
+	Description template.HTML `json:"description"`
 	Link        string        `json:"link"`
 	Source      string        `json:"source"`
 	ParseDate   time.Time     `json:"parse_date"`
@@ -30,10 +30,11 @@ func GetPost(author, sort string, page, size int) []Post {
 	return FormatPost(models, "")
 }
 
-func SearchPost(q string, page, size int) []Post {
+func SearchPost(q string, page, size int) (int, float64, []Post) {
 	Dao, _ := dao.NewDao("solr", "http://128.199.131.129:8983/solr/post")
-	models := Dao.Search(q, size, (page-1)*size)
-	return FormatPost(models, q)
+	Dao.Debug(true)
+	numfound, qtime, models := Dao.Search(q, size, (page-1)*size)
+	return numfound, qtime, FormatPost(models, q)
 }
 
 func FormatPost(models []cyeam_post_model.Post, key string) []Post {
@@ -48,6 +49,7 @@ func FormatPost(models []cyeam_post_model.Post, key string) []Post {
 		post.Tags = model.Tags
 		post.Figure = model.Figure
 		post.Detail = template.HTML(model.Detail)
+		post.Description = template.HTML(model.Description)
 		post.Link = model.Link
 		post.Source = model.Source
 		post.ParseDate = model.ParseDate.Time
