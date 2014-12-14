@@ -26,13 +26,12 @@ type Post struct {
 
 func GetPost(author, sort string, page, size int) []Post {
 	Dao, _ := dao.NewDao("solr", "http://128.199.131.129:8983/solr/post")
-	Dao.Debug(true)
 	models := Dao.GetPost(author, sort, size, (page-1)*size)
 	return FormatPost(models, "")
 }
 
 func SearchPost(q string, page, size int) []Post {
-	Dao, _ := dao.NewDao("db", "cyeam:qwerty@tcp(128.199.131.129:3306)/cyeam?charset=utf8")
+	Dao, _ := dao.NewDao("solr", "http://128.199.131.129:8983/solr/post")
 	models := Dao.Search(q, size, (page-1)*size)
 	return FormatPost(models, q)
 }
