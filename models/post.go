@@ -4,15 +4,15 @@ import (
 	"cyeam_post/dao"
 	cyeam_post_model "cyeam_post/models"
 	// "fmt"
+	"cyeam_post/cygo"
 	"html/template"
 	"strings"
-	"time"
 )
 
 type Post struct {
 	Id          interface{}   `json:"id"`
 	Title       string        `json:"title`
-	CreateTime  time.Time     `json:"create_time"`
+	CreateTime  string        `json:"create_time"`
 	Author      string        `json:"author"`
 	Detail      template.HTML `json:"detail"`
 	Category    string        `json:"category"`
@@ -21,7 +21,7 @@ type Post struct {
 	Description template.HTML `json:"description"`
 	Link        string        `json:"link"`
 	Source      string        `json:"source"`
-	ParseDate   time.Time     `json:"parse_date"`
+	ParseDate   string        `json:"parse_date"`
 }
 
 func GetPost(author, sort string, page, size int) []Post {
@@ -43,7 +43,7 @@ func FormatPost(models []cyeam_post_model.Post, key string) []Post {
 		post := Post{}
 		post.Id = model.Id
 		post.Title = model.Title
-		// post.CreateTime = model.CreateTime
+		post.CreateTime = model.CreateTime.Time.Format(cygo.DATE_LAYOUT_CHINA)
 		post.Author = model.Author
 		post.Category = model.Category
 		post.Tags = model.Tags
@@ -52,7 +52,7 @@ func FormatPost(models []cyeam_post_model.Post, key string) []Post {
 		post.Description = template.HTML(model.Description)
 		post.Link = model.Link
 		post.Source = model.Source
-		post.ParseDate = model.ParseDate.Time
+		post.ParseDate = model.ParseDate.Time.Format(cygo.DATE_LAYOUT_CHINA)
 		posts = append(posts, post)
 	}
 	return posts
